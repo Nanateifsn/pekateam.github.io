@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown ke 25 April 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 255, 255, 0.2);
+            }
+            to {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        .target-date {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .time-unit {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 1.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .time-unit:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .time-number {
+            font-size: 3rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .time-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .message {
+            margin-top: 2rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 0.5;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .time-number {
+                font-size: 2.5rem;
+            }
+            
+            .countdown {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .countdown {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            
+            .time-unit {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <h1>Countdown Timer</h1>
+        <div class="target-date">Menuju 25 April 2026</div>
+        
+        <div class="countdown">
+            <div class="time-unit">
+                <span class="time-number" id="days">000</span>
+                <span class="time-label">Hari</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-number" id="hours">00</span>
+                <span class="time-label">Jam</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-number" id="minutes">00</span>
+                <span class="time-label">Menit</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-number" id="seconds">00</span>
+                <span class="time-label">Detik</span>
+            </div>
+        </div>
+        
+        <div class="message" id="message">
+            Waktu terus berjalan menuju momen yang ditunggu...
+        </div>
+    </div>
+
+    <script>
+        // Tanggal target: 25 April 2026
+        const targetDate = new Date('2026-04-25T00:00:00').getTime();
+
+        // Fungsi untuk membuat partikel animasi
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Fungsi untuk memformat angka dengan leading zero
+        function formatNumber(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        // Fungsi untuk memformat hari dengan leading zero (3 digit)
+        function formatDays(num) {
+            return num.toString().padStart(3, '0');
+        }
+
+        // Fungsi untuk update countdown
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance > 0) {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = formatDays(days);
+                document.getElementById('hours').textContent = formatNumber(hours);
+                document.getElementById('minutes').textContent = formatNumber(minutes);
+                document.getElementById('seconds').textContent = formatNumber(seconds);
+
+                // Update pesan berdasarkan waktu tersisa
+                if (days > 365) {
+                    document.getElementById('message').textContent = 'Masih ada waktu yang panjang untuk mempersiapkan diri...';
+                } else if (days > 30) {
+                    document.getElementById('message').textContent = 'Hari yang ditunggu semakin dekat!';
+                } else if (days > 7) {
+                    document.getElementById('message').textContent = 'Tinggal hitungan minggu lagi!';
+                } else if (days > 1) {
+                    document.getElementById('message').textContent = 'Tinggal beberapa hari lagi!';
+                } else if (days === 1) {
+                    document.getElementById('message').textContent = 'Besok adalah hari yang ditunggu!';
+                } else {
+                    document.getElementById('message').textContent = 'Hari ini adalah hari yang ditunggu!';
+                }
+            } else {
+                // Jika tanggal sudah terlewat
+                document.getElementById('days').textContent = '000';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                document.getElementById('message').textContent = '🎉 Hari yang ditunggu telah tiba! 🎉';
+            }
+        }
+
+        // Inisialisasi
+        createParticles();
+        updateCountdown();
+
+        // Update setiap detik
+        setInterval(updateCountdown, 1000);
+
+        // Efek hover pada container
+        const container = document.querySelector('.container');
+        container.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.02)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+
+        container.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>
+
