@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown ke 25 April 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,12 +16,22 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); /* Darker theme */
             min-height: 100vh;
             display: flex;
+            flex-direction: column; /* Changed to column to stack elements */
             justify-content: center;
             align-items: center;
             overflow: hidden;
+        }
+
+        .peka-team-title {
+            font-family: 'Rubik Wet Paint', cursive;
+            font-size: 5rem; /* Adjust as needed */
+            color: #e0e0e0; /* Light gray for contrast */
+            margin-bottom: 2rem; /* Space between title and container */
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            z-index: 1;
         }
 
         .container {
@@ -26,12 +39,13 @@
             color: white;
             padding: 2rem;
             border-radius: 20px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3); /* Darker transparent background */
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             max-width: 800px;
             width: 90%;
+            z-index: 1;
         }
 
         h1 {
@@ -64,16 +78,16 @@
         }
 
         .time-unit {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.1); /* Slightly darker unit background */
             border-radius: 15px;
             padding: 1.5rem 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .time-unit:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
         }
 
         .time-number {
@@ -122,7 +136,7 @@
             position: absolute;
             width: 4px;
             height: 4px;
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.4); /* Darker particles */
             border-radius: 50%;
             animation: float 6s ease-in-out infinite;
         }
@@ -139,6 +153,9 @@
         }
 
         @media (max-width: 768px) {
+            .peka-team-title {
+                font-size: 3rem;
+            }
             h1 {
                 font-size: 2rem;
             }
@@ -157,6 +174,9 @@
         }
 
         @media (max-width: 480px) {
+            .peka-team-title {
+                font-size: 2rem;
+            }
             .countdown {
                 grid-template-columns: 1fr;
                 gap: 0.8rem;
@@ -171,9 +191,9 @@
 <body>
     <div class="particles" id="particles"></div>
     
+    <div class="peka-team-title">PekaTeam</div>
+
     <div class="container">
-        <h1>Countdown Timer</h1>
-        <div class="target-date">Menuju 25 April 2026</div>
         
         <div class="countdown">
             <div class="time-unit">
@@ -195,38 +215,38 @@
         </div>
         
         <div class="message" id="message">
-            Waktu terus berjalan menuju momen yang ditunggu...
+            <!-- Removed dynamic message -->
         </div>
     </div>
 
     <script>
         // Tanggal target: 25 April 2026
-        const targetDate = new Date('2026-04-25T00:00:00').getTime();
+        const targetDate = new Date("2026-04-25T00:00:00").getTime();
 
         // Fungsi untuk membuat partikel animasi
         function createParticles() {
-            const particlesContainer = document.getElementById('particles');
+            const particlesContainer = document.getElementById("particles");
             const particleCount = 50;
 
             for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                const particle = document.createElement("div");
+                particle.className = "particle";
+                particle.style.left = Math.random() * 100 + "%";
+                particle.style.top = Math.random() * 100 + "%";
+                particle.style.animationDelay = Math.random() * 6 + "s";
+                particle.style.animationDuration = (Math.random() * 3 + 3) + "s";
                 particlesContainer.appendChild(particle);
             }
         }
 
         // Fungsi untuk memformat angka dengan leading zero
         function formatNumber(num) {
-            return num.toString().padStart(2, '0');
+            return num.toString().padStart(2, "0");
         }
 
         // Fungsi untuk memformat hari dengan leading zero (3 digit)
         function formatDays(num) {
-            return num.toString().padStart(3, '0');
+            return num.toString().padStart(3, "0");
         }
 
         // Fungsi untuk update countdown
@@ -240,32 +260,20 @@
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                document.getElementById('days').textContent = formatDays(days);
-                document.getElementById('hours').textContent = formatNumber(hours);
-                document.getElementById('minutes').textContent = formatNumber(minutes);
-                document.getElementById('seconds').textContent = formatNumber(seconds);
+                document.getElementById("days").textContent = formatDays(days);
+                document.getElementById("hours").textContent = formatNumber(hours);
+                document.getElementById("minutes").textContent = formatNumber(minutes);
+                document.getElementById("seconds").textContent = formatNumber(seconds);
 
-                // Update pesan berdasarkan waktu tersisa
-                if (days > 365) {
-                    document.getElementById('message').textContent = 'Masih ada waktu yang panjang untuk mempersiapkan diri...';
-                } else if (days > 30) {
-                    document.getElementById('message').textContent = 'Hari yang ditunggu semakin dekat!';
-                } else if (days > 7) {
-                    document.getElementById('message').textContent = 'Tinggal hitungan minggu lagi!';
-                } else if (days > 1) {
-                    document.getElementById('message').textContent = 'Tinggal beberapa hari lagi!';
-                } else if (days === 1) {
-                    document.getElementById('message').textContent = 'Besok adalah hari yang ditunggu!';
-                } else {
-                    document.getElementById('message').textContent = 'Hari ini adalah hari yang ditunggu!';
-                }
+                // Set message to empty string
+                document.getElementById("message").textContent = "";
             } else {
                 // Jika tanggal sudah terlewat
-                document.getElementById('days').textContent = '000';
-                document.getElementById('hours').textContent = '00';
-                document.getElementById('minutes').textContent = '00';
-                document.getElementById('seconds').textContent = '00';
-                document.getElementById('message').textContent = '🎉 Hari yang ditunggu telah tiba! 🎉';
+                document.getElementById("days").textContent = "000";
+                document.getElementById("hours").textContent = "00";
+                document.getElementById("minutes").textContent = "00";
+                document.getElementById("seconds").textContent = "00";
+                document.getElementById("message").textContent = "🎉 Hari yang ditunggu telah tiba! 🎉";
             }
         }
 
@@ -277,17 +285,16 @@
         setInterval(updateCountdown, 1000);
 
         // Efek hover pada container
-        const container = document.querySelector('.container');
-        container.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.02)';
-            this.style.transition = 'transform 0.3s ease';
+        const container = document.querySelector(".container");
+        container.addEventListener("mouseenter", function() {
+            this.style.transform = "scale(1.02)";
+            this.style.transition = "transform 0.3s ease";
         });
 
-        container.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1)';
+        container.addEventListener("mouseleave", function() {
+            this.style.transform = "scale(1)";
         });
     </script>
 </body>
 </html>
-
 
